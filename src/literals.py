@@ -22,6 +22,7 @@ PEER = "cluster"
 ZK = "zookeeper"
 REL_NAME = "kafka-client"
 
+OAUTH_REL_NAME = "oauth"
 TLS_RELATION = "certificates"
 TRUSTED_CERTIFICATE_RELATION = "trusted-certificate"
 TRUSTED_CA_RELATION = "trusted-ca"
@@ -43,7 +44,8 @@ JMX_EXPORTER_PORT = 9101
 METRICS_RULES_DIR = "./src/alert_rules/prometheus"
 LOGS_RULES_DIR = "./src/alert_rules/loki"
 
-AuthMechanism = Literal["SASL_PLAINTEXT", "SASL_SSL", "SSL"]
+AuthProtocol = Literal["SASL_PLAINTEXT", "SASL_SSL", "SSL"]
+AuthMechanism = Literal["SCRAM-SHA-512", "OAUTHBEARER", "SSL"]
 Scope = Literal["INTERNAL", "CLIENT"]
 DebugLevel = Literal["DEBUG", "INFO", "WARNING", "ERROR"]
 DatabagScope = Literal["unit", "app"]
@@ -74,10 +76,10 @@ class Ports:
     internal: int
 
 
-SECURITY_PROTOCOL_PORTS: Dict[AuthMechanism, Ports] = {
-    "SASL_PLAINTEXT": Ports(9092, 19092),
-    "SASL_SSL": Ports(9093, 19093),
-    "SSL": Ports(9094, 19094),
+SECURITY_PROTOCOL_PORTS: Dict[AuthProtocol, Dict[AuthMechanism, Ports]] = {
+    "SASL_PLAINTEXT": {"SCRAM-SHA-512": Ports(9092, 19092), "OAUTHBEARER": Ports(9095, 19095)},
+    "SASL_SSL": {"SCRAM-SHA-512": Ports(9093, 19093), "OAUTHBEARER": Ports(9096, 19096)},
+    "SSL": {"SSL": Ports(9094, 19094)},
 }
 
 
