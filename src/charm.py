@@ -20,6 +20,7 @@ from ops.pebble import Layer
 
 from core.cluster import ClusterState
 from core.structured_config import CharmConfig
+from events.oauth import OAuthHandler
 from events.password_actions import PasswordActionEvents
 from events.provider import KafkaProvider
 from events.tls import TLSHandler
@@ -44,7 +45,6 @@ from literals import (
 from managers.auth import AuthManager
 from managers.config import KafkaConfigManager
 from managers.tls import TLSManager
-from events.oauth import OAuthHandler
 from workload import KafkaWorkload
 
 logger = logging.getLogger(__name__)

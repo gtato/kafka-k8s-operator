@@ -201,14 +201,18 @@ async def test_kafka_tls_scaling(ops_test: OpsTest):
     assert f"{chroot}/brokers/ids/2" in active_brokers
 
     kafka_address = await get_address(ops_test=ops_test, app_name=APP_NAME, unit_num=2)
-    assert check_tls(ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL"]["SCRAM-SHA-512"].client)
+    assert check_tls(
+        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL"]["SCRAM-SHA-512"].client
+    )
 
     # remove relation and check connection again
     remove_relation_cmd = f"remove-relation {APP_NAME} {DUMMY_NAME}"
     await ops_test.juju(*remove_relation_cmd.split(), check=True)
 
     await ops_test.model.wait_for_idle(apps=[APP_NAME], idle_period=30, timeout=1000)
-    assert not check_tls(ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL"]["SCRAM-SHA-512"].client)
+    assert not check_tls(
+        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL"]["SCRAM-SHA-512"].client
+    )
 
 
 @pytest.mark.abort_on_fail
@@ -240,4 +244,6 @@ async def test_tls_removed(ops_test: OpsTest):
     )
 
     kafka_address = await get_address(ops_test=ops_test, app_name=APP_NAME)
-    assert not check_tls(ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL"]["SCRAM-SHA-512"].client)
+    assert not check_tls(
+        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL"]["SCRAM-SHA-512"].client
+    )

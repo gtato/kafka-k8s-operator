@@ -126,4 +126,3 @@ class KafkaProvider(Object):
             self.charm.state.cluster.update({username: ""})
 
         self.charm.update_client_data()
-

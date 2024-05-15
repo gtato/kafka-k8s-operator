@@ -188,7 +188,7 @@ class ClusterState(Object):
     @property
     def port(self) -> int:
         """Return the port to be used externally."""
-        ssl_enabled = self.cluster.tls_enabled and self.broker.certificate
+        ssl_enabled = self.cluster.tls_enabled and self.unit_broker.certificate
         protocol: AuthProtocol = "SASL_SSL" if ssl_enabled else "SASL_PLAINTEXT"
         mechanism: AuthMechanism = "SCRAM-SHA-512"
         return SECURITY_PROTOCOL_PORTS[protocol][mechanism].client

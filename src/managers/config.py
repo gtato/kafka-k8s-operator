@@ -308,19 +308,8 @@ class KafkaConfigManager:
         return scram_properties
 
     @property
-<<<<<<< HEAD
-    def security_protocol(self) -> AuthMechanism:
-        """Infers current charm security.protocol based on current relations."""
-        # FIXME: When we have multiple auth_mechanims/listeners, remove this method
-        return (
-            "SASL_SSL"
-            if (self.state.cluster.tls_enabled and self.state.unit_broker.certificate)
-            else "SASL_PLAINTEXT"
-        )
-=======
     def oauth_properties(self) -> list[str]:
         """Builds the properties for the oauth listener.
->>>>>>> [CSS-6503] Add OAuth support for external clients
 
         Returns:
             list of oauth properties to be set.
@@ -359,7 +348,7 @@ class KafkaConfigManager:
     def security_protocol(self) -> AuthProtocol:
         """Returns the primary security protocol based on current relations."""
         # FIXME: When we have multiple auth_mechanism/listeners, remove this method
-        if self.state.cluster.tls_enabled and self.state.broker.certificate:
+        if self.state.cluster.tls_enabled and self.state.unit_broker.certificate:
             return "SASL_SSL"
         return "SASL_PLAINTEXT"
 
@@ -367,14 +356,13 @@ class KafkaConfigManager:
     def internal_listener(self) -> Listener:
         """Return the internal listener."""
         protocol = self.security_protocol
-<<<<<<< HEAD
-        return Listener(host=self.state.unit_broker.host, protocol=protocol, scope="INTERNAL")
-=======
         mechanism: AuthMechanism = "SCRAM-SHA-512"
         return Listener(
-            host=self.state.broker.host, protocol=protocol, mechanism=mechanism, scope="INTERNAL"
+            host=self.state.unit_broker.host,
+            protocol=protocol,
+            mechanism=mechanism,
+            scope="INTERNAL",
         )
->>>>>>> [CSS-6503] Add OAuth support for external clients
 
     @property
     def client_listeners(self) -> list[Listener]:
@@ -389,18 +377,13 @@ class KafkaConfigManager:
             protocol_mechanism_dict.append(("SSL", "SSL"))
 
         return [
-<<<<<<< HEAD
-            Listener(host=self.state.unit_broker.host, protocol=auth, scope="CLIENT")
-            for auth in self.auth_mechanisms
-=======
             Listener(
-                host=self.state.broker.host,
+                host=self.state.unit_broker.host,
                 protocol=protocol,
                 mechanism=mechanism,
                 scope="CLIENT",
             )
             for protocol, mechanism in protocol_mechanism_dict
->>>>>>> [CSS-6503] Add OAuth support for external clients
         ]
 
     @property
@@ -447,12 +430,8 @@ class KafkaConfigManager:
             "sasl.mechanism=SCRAM-SHA-512",
             # FIXME: security.protocol will need changing once multiple internal protocols/mechanisms are supported
             f"security.protocol={self.security_protocol}",
-<<<<<<< HEAD
             # FIXME: security.protocol will need changing once multiple listener auth schemes
             f"bootstrap.servers={self.state.bootstrap_server}",
-=======
-            f"bootstrap.servers={','.join(self.state.bootstrap_server)}",
->>>>>>> [CSS-6503] Add OAuth support for external clients
         ]
 
         if self.state.cluster.tls_enabled and self.state.unit_broker.certificate:
