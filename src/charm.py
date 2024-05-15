@@ -44,7 +44,7 @@ from literals import (
 from managers.auth import AuthManager
 from managers.config import KafkaConfigManager
 from managers.tls import TLSManager
-from oauth import OAuthHandler
+from events.oauth import OAuthHandler
 from workload import KafkaWorkload
 
 logger = logging.getLogger(__name__)

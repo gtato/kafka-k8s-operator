@@ -379,9 +379,6 @@ class KafkaConfigManager:
     @property
     def client_listeners(self) -> list[Listener]:
         """Return a list of extra listeners."""
-        # if there is a relation with kafka then add extra listener
-        if not self.state.client_relations:
-            return []
         protocol_mechanism_dict: list[tuple[AuthProtocol, AuthMechanism]] = []
         if self.state.client_relations:
             protocol_mechanism_dict.append((self.security_protocol, "SCRAM-SHA-512"))
