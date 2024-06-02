@@ -58,6 +58,9 @@ requires:
   logging:
     interface: loki_push_api
     optional: true
+  oauth:
+    interface: oauth
+    optional: true
 
 provides:
   kafka-client:
