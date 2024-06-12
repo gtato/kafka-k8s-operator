@@ -116,7 +116,7 @@ async def test_kafka_tls(ops_test: OpsTest, app_charm):
 
     # Client port shouldn't be up before relating to client app.
     assert not check_tls(
-        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL"]["SCRAM-SHA-512"].client
+        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL", "SCRAM-SHA-512"].client
     )
 
     await asyncio.gather(
@@ -134,7 +134,7 @@ async def test_kafka_tls(ops_test: OpsTest, app_charm):
     )
 
     assert check_tls(
-        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL"]["SCRAM-SHA-512"].client
+        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL", "SCRAM-SHA-512"].client
     )
 
     # Rotate credentials
@@ -201,7 +201,7 @@ async def test_kafka_tls_scaling(ops_test: OpsTest):
 
     kafka_address = await get_address(ops_test=ops_test, app_name=APP_NAME, unit_num=2)
     assert check_tls(
-        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL"]["SCRAM-SHA-512"].client
+        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL", "SCRAM-SHA-512"].client
     )
 
     # remove relation and check connection again
@@ -210,7 +210,7 @@ async def test_kafka_tls_scaling(ops_test: OpsTest):
 
     await ops_test.model.wait_for_idle(apps=[APP_NAME], idle_period=30, timeout=1000)
     assert not check_tls(
-        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL"]["SCRAM-SHA-512"].client
+        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL", "SCRAM-SHA-512"].client
     )
 
 
@@ -244,5 +244,5 @@ async def test_tls_removed(ops_test: OpsTest):
 
     kafka_address = await get_address(ops_test=ops_test, app_name=APP_NAME)
     assert not check_tls(
-        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL"]["SCRAM-SHA-512"].client
+        ip=kafka_address, port=SECURITY_PROTOCOL_PORTS["SASL_SSL", "SCRAM-SHA-512"].client
     )
